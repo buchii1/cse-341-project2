@@ -5,6 +5,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 async function loginUser(req, res, next) {
+	// #swagger.tags=['Users']
 	const user = await User.findOne({ email: req.body.email });
 
 	if (!user) {
@@ -26,6 +27,7 @@ async function loginUser(req, res, next) {
 }
 
 async function createUser(req, res, next) {
+	// #swagger.tags=['Users']
 	try {
 		let existingUser = await User.findOne({ email: req.body.email });
 		if (existingUser) {
@@ -63,6 +65,7 @@ async function createUser(req, res, next) {
 }
 
 async function getUsers(req, res) {
+	// #swagger.tags=['Users']
 	try {
 		let user = await User.find({});
 		if (!user) {
@@ -75,6 +78,7 @@ async function getUsers(req, res) {
 }
 
 async function getUserById(req, res, next) {
+	// #swagger.tags=['Users']
 	console.log(req.user);
 	let id;
 	try {
@@ -105,6 +109,7 @@ async function getUserById(req, res, next) {
 }
 
 async function updateUser(req, res, next) {
+	// #swagger.tags=['Users']
 	const userId = new ObjectId(req.params.userId);
 	let authorizedUserId = req.user.userId;
 	if (authorizedUserId != userId) {
@@ -138,6 +143,7 @@ async function updateUser(req, res, next) {
 }
 
 async function deleteUser(req, res, next) {
+	// #swagger.tags=['Users']
 	let authorizedUserId = req.user.userId;
 	let userId = new ObjectId(req.params.userId);
 	if (authorizedUserId != userId) {
@@ -158,9 +164,9 @@ async function deleteUser(req, res, next) {
 
 module.exports = {
 	loginUser,
-	createUser,
 	getUsers,
 	getUserById,
+	createUser,
 	updateUser,
 	deleteUser,
 };

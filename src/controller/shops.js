@@ -3,6 +3,7 @@ const ObjectId = require("mongodb").ObjectId;
 const createError = require("http-errors");
 
 async function getShops(req, res, next) {
+	// #swagger.tags=['Shops']
 	try {
 		console.log("Getting shops");
 		let shops = await Shop.find({});
@@ -17,6 +18,7 @@ async function getShops(req, res, next) {
 }
 
 async function getProducts(req, res, next) {
+	// #swagger.tags=['Shops']
 	let id = new ObjectId(req.params.shopId);
 	let shop = await Shop.findOne({ _id: id });
 	console.log(shop);
@@ -32,28 +34,8 @@ async function getProducts(req, res, next) {
 	}
 }
 
-async function getCategories(req, res) {
-	let id = new ObjectId(req.params.shopId);
-	let shop = await Shop.findOne({ _id: id });
-	let categories;
-	if (shop.name == "Fake Store") {
-		categories = await fetch(`${shop.url}/products/categories`).then(
-			(category) => category.json()
-		);
-	} else {
-		categories = await fetch(`${shop.url}/categories`).then((category) =>
-			category.json()
-		);
-	}
-	res.setHeader("Content-Type", "application/json");
-	if (shop.name == "Storest") {
-		res.status(200).json(categories.data);
-	} else {
-		res.status(200).json(categories);
-	}
-}
-
 async function getProduct(req, res, next) {
+	// #swagger.tags=['Shops']
 	let id = new ObjectId(req.params.shopId);
 	console.log(id, req.body.shopId);
 	let shop = await Shop.findOne({ _id: id });
@@ -80,6 +62,28 @@ async function getProduct(req, res, next) {
 		res.status(200).json(product);
 	} catch (error) {
 		next(error);
+	}
+}
+
+async function getCategories(req, res) {
+	// #swagger.tags=['Shops']
+	let id = new ObjectId(req.params.shopId);
+	let shop = await Shop.findOne({ _id: id });
+	let categories;
+	if (shop.name == "Fake Store") {
+		categories = await fetch(`${shop.url}/products/categories`).then(
+			(category) => category.json()
+		);
+	} else {
+		categories = await fetch(`${shop.url}/categories`).then((category) =>
+			category.json()
+		);
+	}
+	res.setHeader("Content-Type", "application/json");
+	if (shop.name == "Storest") {
+		res.status(200).json(categories.data);
+	} else {
+		res.status(200).json(categories);
 	}
 }
 

@@ -5,7 +5,7 @@ const doc = {
 		title: "Ecommerce Api",
 		description: "Description",
 	},
-	host: "centeralmall.onrender.com",
+	host: "project2-d49k.onrender.com",
 	schemes: ["https"],
 };
 
